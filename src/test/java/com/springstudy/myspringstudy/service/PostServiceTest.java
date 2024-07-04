@@ -2,6 +2,7 @@ package com.springstudy.myspringstudy.service;
 
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
+import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,11 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -65,34 +61,12 @@ class PostServiceTest {
         postRepository.save(savePost);
 
         // when
-        Post post = postService.get(savePost.getId());
+        PostResponse postResponse = postService.get(savePost.getId());
 
         // then
-        assertNotNull(post);
+        assertNotNull(postResponse);
         assertEquals(1L, postRepository.count());
-        assertEquals("ㅎㅇ", post.getTitle());
-        assertEquals("ㅎㅇㅎㅇ", post.getContent());
-    }
-
-    @Test
-    @DisplayName("글 1개 조회")
-    void test4() throws Exception {
-        // given
-        Post post = Post.builder()
-                .title("ㅎㅇㅎㅇ")
-                .content("ㅎㅇ")
-                .build();
-
-        postRepository.save(post);
-
-        // expected
-        mockMvc.perform(get("/posts/{postId}", post.getId())
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("ㅎㅇㅎㅇ"))
-                .andExpect(jsonPath("$.content").value("ㅎㅇ"))
-                .andDo(print());
-
+        assertEquals("ㅎㅇ", postResponse.getTitle());
+        assertEquals("ㅎㅇㅎㅇ", postResponse.getContent());
     }
 }

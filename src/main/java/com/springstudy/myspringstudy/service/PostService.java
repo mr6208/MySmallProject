@@ -2,6 +2,7 @@ package com.springstudy.myspringstudy.service;
 
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
+import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,16 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(Long id) {
+    public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다."));
 
-        return post;
+        PostResponse response = PostResponse.builder()
+                .title(post.getTitle())
+                .id(post.getId())
+                .content(post.getContent())
+                .build();
+
+        return response;
     }
 }
