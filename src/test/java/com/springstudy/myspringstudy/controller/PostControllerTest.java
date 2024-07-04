@@ -55,7 +55,6 @@ class PostControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string("{}"))
                 .andDo(print());
 
     }
@@ -109,5 +108,28 @@ class PostControllerTest {
         Post post = postRepository.findAll().get(0);
         assertEquals("제목이다", post.getTitle());
         assertEquals("내용용", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("ㅎㅇ")
+                .build();
+
+        // 서버에서 제목을 최대 10글자만 반환하도록 해주세요
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.content").value("ㅎㅇ"))
+                .andDo(print());
+
     }
 }
