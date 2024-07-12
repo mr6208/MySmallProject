@@ -12,11 +12,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -129,6 +136,32 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("ㅎㅇ"))
+                .andDo(print());
+
+    }
+    @Test
+    @DisplayName("페이지를 0으로 요청해도 첫 페이지를 가져온다")
+    void test5() throws Exception {
+        // given
+        List<Post> requestPost = IntStream.range(1, 31)
+                .mapToObj(i -> {
+                    return Post.builder()
+                            .title("제목입니다 " + i)
+                            .content("내용입니다 " + i)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPost);
+
+        // expected
+        mockMvc.perform(get("/posts?page=0&size=10")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(10)))
+                .andExpect(jsonPath("$[0].id").value(requestPost.get(29).getId()))
+                .andExpect(jsonPath("$[0].title").value("제목입니다 30"))
+                .andExpect(jsonPath("$[0].content").value("내용입니다 30"))
                 .andDo(print());
 
     }
