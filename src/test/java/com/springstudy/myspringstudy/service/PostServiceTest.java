@@ -2,6 +2,7 @@ package com.springstudy.myspringstudy.service;
 
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
+import com.springstudy.myspringstudy.dto.request.PostSearch;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -68,5 +74,33 @@ class PostServiceTest {
         assertEquals(1L, postRepository.count());
         assertEquals("ㅎㅇ", postResponse.getTitle());
         assertEquals("ㅎㅇㅎㅇ", postResponse.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1페이지 조회")
+    void test3() {
+        // given
+        List<Post> requestPost = IntStream.range(0, 20)
+                .mapToObj(i -> {
+                    return Post.builder()
+                            .title("제목입니다 " + i)
+                            .content("내용입니다 " + i)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPost);
+
+        PostSearch postSearch = PostSearch.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        // when
+        List<PostResponse> posts = postService.findAll(postSearch);
+
+        // then
+        assertEquals(10L, posts.size());
+        assertEquals("제목입니다 19", posts.get(0).getTitle());
     }
 }
