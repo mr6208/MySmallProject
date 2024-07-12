@@ -1,12 +1,15 @@
 package com.springstudy.myspringstudy.controller;
 
 import com.springstudy.myspringstudy.dto.request.PostCreate;
+import com.springstudy.myspringstudy.dto.request.PostSearch;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -23,5 +26,10 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public PostResponse get(@PathVariable("postId") Long id) {
         return postService.get(id);
+    }
+
+    @GetMapping("/posts")
+    public List<PostResponse> getPosts(@ModelAttribute PostSearch postSearch) {
+        return postService.findAll(postSearch);
     }
 }
