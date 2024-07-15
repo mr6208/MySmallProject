@@ -3,6 +3,7 @@ package com.springstudy.myspringstudy.service;
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
 import com.springstudy.myspringstudy.dto.request.PostSearch;
+import com.springstudy.myspringstudy.dto.request.PostUpdate;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,5 +103,56 @@ class PostServiceTest {
         // then
         assertEquals(10L, posts.size());
         assertEquals("제목입니다 19", posts.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        PostUpdate updatePost = PostUpdate.builder()
+                .title("바뀐 제목이다")
+                .content("내용이다")
+                .build();
+
+        // when
+        postService.update(post.getId(), updatePost);
+
+        // then
+        Post updatedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 글 입니다."));
+        assertEquals("바뀐 제목이다", updatedPost.getTitle());
+        assertEquals("내용이다", updatedPost.getContent());
+    }
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        PostUpdate updatePost = PostUpdate.builder()
+                .title("제목이다")
+                .content("바뀐 내용이다")
+                .build();
+
+        // when
+        postService.update(post.getId(), updatePost);
+
+        // then
+        Post updatedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 글 입니다."));
+        assertEquals("제목이다", updatedPost.getTitle());
+        assertEquals("바뀐 내용이다", updatedPost.getContent());
     }
 }

@@ -3,6 +3,7 @@ package com.springstudy.myspringstudy.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
+import com.springstudy.myspringstudy.dto.request.PostUpdate;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +20,7 @@ import java.util.stream.IntStream;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -164,5 +164,31 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].content").value("내용입니다 30"))
                 .andDo(print());
 
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test6() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        PostUpdate updatePost = PostUpdate.builder()
+                .title("바뀐 제목이다")
+                .content("내용이다")
+                .build();
+
+        // expected
+        mockMvc.perform(patch("/post/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatePost)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("바뀐 제목이다"))
+                .andExpect(jsonPath("$.content").value("내용이다"))
+                .andDo(print());
     }
 }
