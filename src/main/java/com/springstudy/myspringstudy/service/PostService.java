@@ -3,6 +3,7 @@ package com.springstudy.myspringstudy.service;
 import com.springstudy.myspringstudy.domain.Post;
 import com.springstudy.myspringstudy.dto.request.PostCreate;
 import com.springstudy.myspringstudy.dto.request.PostSearch;
+import com.springstudy.myspringstudy.dto.request.PostUpdate;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,24 @@ public class PostService {
     public List<PostResponse> findAll(PostSearch postSearch) {
         return postRepository.getList(postSearch).stream().map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public PostResponse update(Long id, PostUpdate postUpdate) {
+        Post post = postRepository.findById(id).
+                orElseThrow(() ->new IllegalArgumentException("존재하는 글 입니다."));
+
+//        PostEditor.PostEditorBuilder builder = post.toEditor();
+
+//        PostEditor postEditor = builder.title(postUpdate.getTitle())
+//                .content(postUpdate.getContent())
+//                .build();
+
+        post.update(postUpdate.getContent(), postUpdate.getTitle());
+
+        return PostResponse.builder()
+                .id(post.getId())
+                .content(post.getContent())
+                .title(post.getTitle())
+                .build();
     }
 }
