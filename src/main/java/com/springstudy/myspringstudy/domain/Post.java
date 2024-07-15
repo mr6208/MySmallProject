@@ -21,4 +21,22 @@ public class Post {
         this.title = title;
         this.content = content;
     }
+
+    /*public PostEditor.PostEditorBuilder toEditor() {
+        return PostEditor.builder()
+                .title(title)
+                .content(content);
+    }
+
+    public void update(PostEditor postEditor) {
+        title = postEditor.getTitle();
+        content = postEditor.getContent();
+    }*/
+
+    public void update(String content, String title) {
+        this.content = content;
+        this.title = title;
+    }
 }
+
+
