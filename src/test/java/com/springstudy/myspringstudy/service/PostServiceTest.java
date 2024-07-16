@@ -5,6 +5,7 @@ import com.springstudy.myspringstudy.dto.request.PostCreate;
 import com.springstudy.myspringstudy.dto.request.PostSearch;
 import com.springstudy.myspringstudy.dto.request.PostUpdate;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
+import com.springstudy.myspringstudy.exception.PostNotFound;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -130,6 +130,7 @@ class PostServiceTest {
         assertEquals("바뀐 제목이다", updatedPost.getTitle());
         assertEquals("내용이다", updatedPost.getContent());
     }
+
     @Test
     @DisplayName("글 내용 수정")
     void test5() {
@@ -154,5 +155,79 @@ class PostServiceTest {
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 글 입니다."));
         assertEquals("제목이다", updatedPost.getTitle());
         assertEquals("바뀐 내용이다", updatedPost.getContent());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test6() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        // when
+        postService.delete(post.getId());
+
+        // then
+        assertEquals(0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글을 조회할시 에러 반환")
+    void test7() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.get(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글을 삭제할시 예외 반환")
+    void test8() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.delete(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글을 수정할시 예외 반환")
+    void test9() {
+        // given
+        Post post = Post.builder()
+                .title("제목이다")
+                .content("내용이다")
+                .build();
+
+        postRepository.save(post);
+
+        PostUpdate update = PostUpdate.builder()
+                .title("바뀐거 제목")
+                .content("바뀐거 내용")
+                .build();
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.update(post.getId() + 1L, update);
+        });
     }
 }
