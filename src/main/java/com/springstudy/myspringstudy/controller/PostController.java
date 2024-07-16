@@ -19,12 +19,13 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public void post(@RequestBody @Valid PostCreate request) throws Exception {
+        request.validate();
         postService.write(request);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/post/{postId}")
     public PostResponse get(@PathVariable("postId") Long id) {
         return postService.get(id);
     }
@@ -36,5 +37,10 @@ public class PostController {
     @PatchMapping("/post/{postId}")
     public PostResponse update(@PathVariable("postId") Long id, @RequestBody @Valid PostUpdate postUpdate) {
         return postService.update(id, postUpdate);
+    }
+
+    @DeleteMapping("/post/{postId}")
+    public void delete(@PathVariable("postId") Long id) {
+        postService.delete(id);
     }
 }
