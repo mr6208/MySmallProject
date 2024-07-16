@@ -5,6 +5,7 @@ import com.springstudy.myspringstudy.dto.request.PostCreate;
 import com.springstudy.myspringstudy.dto.request.PostSearch;
 import com.springstudy.myspringstudy.dto.request.PostUpdate;
 import com.springstudy.myspringstudy.dto.response.PostResponse;
+import com.springstudy.myspringstudy.exception.PostNotFound;
 import com.springstudy.myspringstudy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,8 @@ public class PostService {
 
     public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다."));
+//                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 글 입니다."))
+                .orElseThrow(PostNotFound::new);
 
         return PostResponse.builder()
                 .title(post.getTitle())
@@ -46,8 +48,9 @@ public class PostService {
     }
 
     public PostResponse update(Long id, PostUpdate postUpdate) {
-        Post post = postRepository.findById(id).
-                orElseThrow(() ->new IllegalArgumentException("존재하는 글 입니다."));
+        Post post = postRepository.findById(id)
+//                .orElseThrow(() ->new IllegalArgumentException("존재하는 글 입니다."));
+                .orElseThrow(PostNotFound::new);
 
 //        PostEditor.PostEditorBuilder builder = post.toEditor();
 
