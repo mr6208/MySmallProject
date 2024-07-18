@@ -1,0 +1,28 @@
+= 나작프API
+:toc:
+
+== 게시글 단건 조회
+
+=== 요청
+
+include::{snippets}/post-get/http-request.adoc[]
+
+=== 요청 파라미터
+include::{snippets}/post-get/path-parameters.adoc[]
+
+=== 응답
+include::{snippets}/post-get/http-response.adoc[]
+
+include::{snippets}/post-get/response-fields.adoc[]
+
+
+== 게시글 작성
+
+=== 요청
+
+include::{snippets}/post-create/http-request.adoc[]
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/post-create/http-response.adoc[]
