@@ -1,5 +1,7 @@
-package com.springstudy.myspringstudy.exception;
+package com.springstudy.myspringstudy.exception.post;
 
+
+import com.springstudy.myspringstudy.exception.MySuperException;
 
 /**
  * 상태코드 -> 404

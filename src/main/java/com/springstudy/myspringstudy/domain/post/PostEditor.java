@@ -1,4 +1,4 @@
-package com.springstudy.myspringstudy.domain;
+package com.springstudy.myspringstudy.domain.post;
 
 import lombok.Builder;
 import lombok.Getter;
