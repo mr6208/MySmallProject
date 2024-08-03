@@ -1,10 +1,10 @@
 package com.springstudy.myspringstudy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springstudy.myspringstudy.domain.Post;
-import com.springstudy.myspringstudy.dto.request.PostCreate;
-import com.springstudy.myspringstudy.dto.request.PostUpdate;
-import com.springstudy.myspringstudy.repository.PostRepository;
+import com.springstudy.myspringstudy.domain.post.Post;
+import com.springstudy.myspringstudy.dto.post.request.PostCreate;
+import com.springstudy.myspringstudy.dto.post.request.PostUpdate;
+import com.springstudy.myspringstudy.repository.post.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,30 +44,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/post 요청시 asdf를 출력하는지")
-    void test() throws Exception {
-        //given
-        PostCreate request = PostCreate.builder()
-                .title("1234567890")
-                .content("내용용")
-                .build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        System.out.println(json);
-
-        // then
-        mockMvc.perform(post("/post")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andDo(print());
-
-    }
-
-    @Test
-    @DisplayName("/posts 요청시 title값은 필수여야한다.")
+    @DisplayName("글 작성 요청시 title값은 필수여야한다.")
     void test2() throws Exception {
         //given
         PostCreate request = PostCreate.builder()

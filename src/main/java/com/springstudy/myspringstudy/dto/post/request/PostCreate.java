@@ -1,4 +1,4 @@
-package com.springstudy.myspringstudy.dto.request;
+package com.springstudy.myspringstudy.dto.post.request;
 
 import com.springstudy.myspringstudy.exception.InvalidRequest;
 import jakarta.validation.constraints.NotBlank;

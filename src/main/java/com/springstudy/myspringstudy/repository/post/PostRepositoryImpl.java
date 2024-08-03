@@ -1,13 +1,14 @@
-package com.springstudy.myspringstudy.repository;
+package com.springstudy.myspringstudy.repository.post;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.springstudy.myspringstudy.domain.Post;
-import com.springstudy.myspringstudy.dto.request.PostSearch;
+import com.springstudy.myspringstudy.domain.post.Post;
+import com.springstudy.myspringstudy.dto.post.request.PostSearch;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.springstudy.myspringstudy.domain.QPost.post;
+import static com.springstudy.myspringstudy.domain.post.QPost.post;
+
 
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements CustomPostRepository{

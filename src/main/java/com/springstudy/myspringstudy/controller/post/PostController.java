@@ -1,10 +1,10 @@
-package com.springstudy.myspringstudy.controller;
+package com.springstudy.myspringstudy.controller.post;
 
-import com.springstudy.myspringstudy.dto.request.PostCreate;
-import com.springstudy.myspringstudy.dto.request.PostSearch;
-import com.springstudy.myspringstudy.dto.request.PostUpdate;
-import com.springstudy.myspringstudy.dto.response.PostResponse;
-import com.springstudy.myspringstudy.service.PostService;
+import com.springstudy.myspringstudy.dto.post.request.PostCreate;
+import com.springstudy.myspringstudy.dto.post.request.PostSearch;
+import com.springstudy.myspringstudy.dto.post.request.PostUpdate;
+import com.springstudy.myspringstudy.dto.post.response.PostResponse;
+import com.springstudy.myspringstudy.service.post.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

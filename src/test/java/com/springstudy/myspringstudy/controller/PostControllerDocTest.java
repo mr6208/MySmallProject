@@ -1,9 +1,9 @@
 package com.springstudy.myspringstudy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springstudy.myspringstudy.domain.Post;
-import com.springstudy.myspringstudy.dto.request.PostCreate;
-import com.springstudy.myspringstudy.repository.PostRepository;
+import com.springstudy.myspringstudy.domain.post.Post;
+import com.springstudy.myspringstudy.dto.post.request.PostCreate;
+import com.springstudy.myspringstudy.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

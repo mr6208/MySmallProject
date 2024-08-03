@@ -1,6 +1,6 @@
-package com.springstudy.myspringstudy.dto.response;
+package com.springstudy.myspringstudy.dto.post.response;
 
-import com.springstudy.myspringstudy.domain.Post;
+import com.springstudy.myspringstudy.domain.post.Post;
 import lombok.Builder;
 import lombok.Getter;
 

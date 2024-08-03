@@ -1,12 +1,13 @@
 package com.springstudy.myspringstudy.service;
 
-import com.springstudy.myspringstudy.domain.Post;
-import com.springstudy.myspringstudy.dto.request.PostCreate;
-import com.springstudy.myspringstudy.dto.request.PostSearch;
-import com.springstudy.myspringstudy.dto.request.PostUpdate;
-import com.springstudy.myspringstudy.dto.response.PostResponse;
-import com.springstudy.myspringstudy.exception.PostNotFound;
-import com.springstudy.myspringstudy.repository.PostRepository;
+import com.springstudy.myspringstudy.domain.post.Post;
+import com.springstudy.myspringstudy.dto.post.request.PostCreate;
+import com.springstudy.myspringstudy.dto.post.request.PostSearch;
+import com.springstudy.myspringstudy.dto.post.request.PostUpdate;
+import com.springstudy.myspringstudy.dto.post.response.PostResponse;
+import com.springstudy.myspringstudy.exception.post.PostNotFound;
+import com.springstudy.myspringstudy.repository.post.PostRepository;
+import com.springstudy.myspringstudy.service.post.PostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
