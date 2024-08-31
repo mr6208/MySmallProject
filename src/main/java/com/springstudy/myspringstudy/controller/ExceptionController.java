@@ -42,7 +42,6 @@ public class ExceptionController {
                 .message(e.getMessage())
                 .validation(e.getValidation())
                 .build();
-        // 응답 json validation -> title : 제목에 '나쁜말'은 안돼요
 
         return ResponseEntity.status(statusCode).body(response);
     }
