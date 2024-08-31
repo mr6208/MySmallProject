@@ -49,14 +49,7 @@ public class PostService {
 
     public PostResponse update(Long id, PostUpdate postUpdate) {
         Post post = postRepository.findById(id)
-//                .orElseThrow(() ->new IllegalArgumentException("존재하는 글 입니다."));
                 .orElseThrow(PostNotFound::new);
-
-//        PostEditor.PostEditorBuilder builder = post.toEditor();
-
-//        PostEditor postEditor = builder.title(postUpdate.getTitle())
-//                .content(postUpdate.getContent())
-//                .build();
 
         post.update(postUpdate.getContent(), postUpdate.getTitle());
 

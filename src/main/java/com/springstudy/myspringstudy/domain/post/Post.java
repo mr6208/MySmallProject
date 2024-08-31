@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
     @Id
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
@@ -21,17 +22,6 @@ public class Post {
         this.title = title;
         this.content = content;
     }
-
-    /*public PostEditor.PostEditorBuilder toEditor() {
-        return PostEditor.builder()
-                .title(title)
-                .content(content);
-    }
-
-    public void update(PostEditor postEditor) {
-        title = postEditor.getTitle();
-        content = postEditor.getContent();
-    }*/
 
     public void update(String content, String title) {
         this.content = content;

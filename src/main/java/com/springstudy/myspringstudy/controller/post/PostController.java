@@ -34,13 +34,14 @@ public class PostController {
     public List<PostResponse> getPosts(@ModelAttribute PostSearch postSearch) {
         return postService.findAll(postSearch);
     }
+
     @PatchMapping("/post/{postId}")
     public PostResponse update(@PathVariable("postId") Long id, @RequestBody @Valid PostUpdate postUpdate) {
         return postService.update(id, postUpdate);
     }
 
     @DeleteMapping("/post/{postId}")
-    public void delete(@PathVariable("postId") Long id) {
+    public void delete(@PathVariable("postId") Long id, @RequestHeader String authorization) {
         postService.delete(id);
     }
 }
