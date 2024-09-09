@@ -1,11 +1,14 @@
-package com.springstudy.myspringstudy.controller.Member;
+package com.springstudy.myspringstudy.controller.Auth;
 
 
 import com.springstudy.myspringstudy.dto.Member.request.JoinRequest;
-import com.springstudy.myspringstudy.service.member.MemberService;
+import com.springstudy.myspringstudy.service.Auth.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,10 +25,17 @@ import java.util.Iterator;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthController {
-    private final MemberService memberService;
+    private final AuthService authService;
     @PostMapping("/join")
     public ResponseEntity<Long> join(@RequestBody @Valid JoinRequest request) {
-        return ResponseEntity.ok(memberService.join(request));
+        return ResponseEntity.ok(authService.join(request));
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<Void> reissue(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + authService.reissue(request, response))
+                .build();
     }
 
     @GetMapping("/test")

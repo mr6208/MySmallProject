@@ -18,6 +18,9 @@ spring:
       pageable:
         one-indexed-parameters: true
         default-page-size: 5
+    redis:
+      host: redis
+      port: 6379
 
   datasource:
     url: jdbc:h2:mem:mr6208
@@ -27,4 +30,6 @@ spring:
 
   jwt:
     secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    access-token-expiration-minutes: 600000
+    refresh-token-expiration-minutes: 86400000
 

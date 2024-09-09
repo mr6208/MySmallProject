@@ -1,6 +1,7 @@
 package com.springstudy.myspringstudy.exception.Member;
 
 import com.springstudy.myspringstudy.exception.MySuperException;
+import org.springframework.http.HttpStatus;
 
 public class DuplicationEmail extends MySuperException {
     public static final String MESSAGE = "중복된 이메일입니다.";
@@ -9,6 +10,6 @@ public class DuplicationEmail extends MySuperException {
         return 400;
     }
     public DuplicationEmail() {
-        super(MESSAGE);
+        super(MESSAGE, HttpStatus.BAD_REQUEST);
     }
 }

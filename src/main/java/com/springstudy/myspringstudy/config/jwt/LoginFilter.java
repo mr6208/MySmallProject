@@ -6,11 +6,13 @@ import com.springstudy.myspringstudy.dto.Member.request.MemberLoginRequest;
 import com.springstudy.myspringstudy.exception.Member.EmailOrPasswordNotExist;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -57,9 +59,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60 * 60 * 10L);
+        String access = jwtUtil.createJwt("access", username, role);
+        String refresh = jwtUtil.createJwt("refresh", username, role);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        //TODO redis 내부에 refresh 토큰 저장
+
+        response.setHeader("Authorization", "Bearer " + access);
+        response.addCookie(createCookie("refresh", refresh));
+        response.setStatus(HttpStatus.OK.value());
+    }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(24 * 60 * 60);
+//        cookie.setSecure(true); HTTPS 통신시 주석 해제
+//        cookie.setPath("/"); 쿠키가 적용 될 범위 설정 필요시 사용
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 
     @Override
