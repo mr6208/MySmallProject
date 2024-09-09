@@ -12,10 +12,17 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
+    private final int accessTokenExpirationMinutes;
+    private final int refreshTokenExpirationMinutes;
 
-    public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
+    public JWTUtil(@Value("${spring.jwt.secret}") String secret,
+                   @Value("${spring.jwt.access-token-expiration-minutes}") int accessTokenExpirationMinutes,
+                   @Value("${spring.jwt.refresh-token-expiration-minutes}") int refreshTokenExpirationMinutes) {
+
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.accessTokenExpirationMinutes = accessTokenExpirationMinutes;
+        this.refreshTokenExpirationMinutes = refreshTokenExpirationMinutes;
     }
 
     public String getUsername(String token) {
@@ -34,7 +41,15 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String category, String username, String role, Long expiredMs) {
+    public String createJwt(String category, String username, String role) {
+        int expiredMs = 0;
+        if (category.equals("access")) {
+            expiredMs = this.accessTokenExpirationMinutes;
+        }
+        if (category.equals("refresh")) {
+            expiredMs = this.refreshTokenExpirationMinutes;
+        }
+
         return Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)

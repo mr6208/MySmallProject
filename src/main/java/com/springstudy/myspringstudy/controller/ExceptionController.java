@@ -43,7 +43,7 @@ public class ExceptionController {
                 .validation(e.getValidation())
                 .build();
 
-        return ResponseEntity.status(statusCode).body(response);
+        return ResponseEntity.status(e.getHttpStatus()).body(response);
     }
 }
 
